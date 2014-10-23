@@ -106,10 +106,8 @@ public class Snake {
 		case "d":
 			now_coordinate[0] += 1;
 			coordinates.add(now_coordinate);
+			break;
 		default:
-			// TODO:入力がなければ前回の入力 prev_input_strの方向に進むが、長くなるので省略
-			now_coordinate[0] += 1;
-			coordinates.add(now_coordinate);
 			break;
 		}
 		return input_str;

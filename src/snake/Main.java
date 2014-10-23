@@ -61,6 +61,10 @@ public class Main{
 
 			// 入力に応じて移動
 			input_str = snake.move(input_str);
+			// 入力がなければ前回の入力 prev_input_strの方向に進む
+			if(input_str == ""){
+				input_str = snake.move(prev_input_str);
+			}
 
 			// 判定
 			//壁とぶつかったか
