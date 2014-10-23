@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @author Tachibana446
  *
  */
-public class Main {
+public class Main{
 
 	/**
 	 * @param args
@@ -56,7 +56,7 @@ public class Main {
 			// 入力文字のリセット
 			prev_input_str = input_str;
 			input_str = "";
-			
+
 
 			Scanner scanner = new Scanner(System.in);
 
@@ -67,35 +67,7 @@ public class Main {
 				elapse_time += (System.currentTimeMillis() - now_ms) / 1000.0;
 			}
 
-			// 入力に応じて移動
-			if(input_str.length() >= 1){
-				input_str = input_str.substring(0, 1);
-			}else{
-				input_str = "";
-			}
-			// 移動
-			switch (input_str) {
-			case "w":
-				now_coordinate[1] -= 1;
-				coordinates.add(now_coordinate);
-				break;
-			case "s":
-				now_coordinate[1] += 1;
-				coordinates.add(now_coordinate);
-				break;
-			case "a":
-				now_coordinate[0] -= 1;
-				coordinates.add(now_coordinate);
-				break;
-			case "d":
-				now_coordinate[0] += 1;
-				coordinates.add(now_coordinate);
-			default:
-				// TODO:入力がなければ前回の入力 prev_input_strの方向に進むが、長くなるので省略
-				now_coordinate[0] += 1;
-				coordinates.add(now_coordinate);
-				break;
-			}
+			input_str = move(input_str, now_coordinate, coordinates);
 
 			// 判定
 			// 壁と接触したか
@@ -121,9 +93,44 @@ public class Main {
 			}
 			// 表示
 			System.out.println(now_coordinate[0] + "," + now_coordinate[1] + "," + snake_size);
-			
+
 			scanner.close();
 		}
 	}
 
+	private static String move(String input_str, int[] now_coordinate,
+			List<int[]> coordinates) {
+		// 入力に応じて移動
+		if(input_str.length() >= 1){
+			input_str = input_str.substring(0, 1);
+		}else{
+			input_str = "";
+		}
+		// 移動
+		switch (input_str) {
+		case "w":
+			now_coordinate[1] -= 1;
+			coordinates.add(now_coordinate);
+			break;
+		case "s":
+			now_coordinate[1] += 1;
+			coordinates.add(now_coordinate);
+			break;
+		case "a":
+			now_coordinate[0] -= 1;
+			coordinates.add(now_coordinate);
+			break;
+		case "d":
+			now_coordinate[0] += 1;
+			coordinates.add(now_coordinate);
+		default:
+			// TODO:入力がなければ前回の入力 prev_input_strの方向に進むが、長くなるので省略
+			now_coordinate[0] += 1;
+			coordinates.add(now_coordinate);
+			break;
+		}
+		return input_str;
+	}
+
 }
+
