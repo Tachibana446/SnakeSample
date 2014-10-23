@@ -72,17 +72,13 @@ public class Main{
 			input_str = move(input_str, now_coordinate, coordinates);
 
 			// 判定
-			// 壁と接触したか
-			if(now_coordinate[0] < 0 || now_coordinate[0] > field_size || now_coordinate[1] < 0 || now_coordinate[1] > field_size){
+			//壁とぶつかったか
+			if(isColliding(field_size, now_coordinate)){
 				alive_flag = false;
 			}
 			// 自身と接触したか
-			// 一番最後は今移動した場所なので、最後から２番めから純にサイズ分だけ見ていく
-			for(int i=1;i < snake_size; i++){
-				if(coordinates.get(coordinates.size() -1 - i) == now_coordinate){
-					alive_flag = false;
-					break;
-				}
+			if(isCollidingOneself(now_coordinate,coordinates, snake_size)){
+				alive_flag = false;
 			}
 			// 餌を食ったか
 			if(now_coordinate == bait_coordinate){
@@ -98,6 +94,40 @@ public class Main{
 		}
 
 		scanner.close();
+	}
+
+	/**
+	 * @param alive_flag
+	 * @param now_coordinate
+	 * @param coordinates
+	 * @param snake_size
+	 * @return
+	 */
+	private static boolean isCollidingOneself(int[] now_coordinate, List<int[]> coordinates, int snake_size) {
+		// 一番最後は今移動した場所なので、最後から２番めから純にサイズ分だけ見ていく
+		boolean flag = false;
+		for(int i=1;i < snake_size; i++){
+			if(coordinates.get(coordinates.size() -1 - i) == now_coordinate){
+				flag = true;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	/**
+	 * 壁と衝突したか判定する
+	 * 現在の座標がステージの大きさを超えていたらtrueを返します
+	 * @param field_size ステージの大きさ
+	 * @param now_coordinate 現在の座標
+	 * @return
+	 */
+	private static boolean isColliding(final int field_size, int[] now_coordinate) {
+		// 壁と接触したか
+		if(now_coordinate[0] <= 0 || now_coordinate[0] >= field_size || now_coordinate[1] <= 0 || now_coordinate[1] >= field_size){
+			return true;
+		}
+		return false;
 	}
 
 	private static String move(String input_str, int[] now_coordinate,
