@@ -49,7 +49,7 @@ public class Main{
 		// スキャナ
 		Scanner scanner = new Scanner(System.in);
 
-		
+
 		// メインループ
 		while(alive_flag){
 
@@ -81,7 +81,7 @@ public class Main{
 				alive_flag = false;
 			}
 			// 餌を食ったか
-			if(now_coordinate == bait_coordinate){
+			if(isCollidingBait(now_coordinate, snake_size, bait_coordinate)){
 				// 蛇が伸びる
 				snake_size += 1;
 				// TODO:次のエサが出る。蛇に被らないようにランダムに出すのがめんどい
@@ -94,6 +94,19 @@ public class Main{
 		}
 
 		scanner.close();
+	}
+
+	/**
+	 * @param now_coordinate
+	 * @param snake_size
+	 * @param bait_coordinate
+	 * @return
+	 */
+	private static boolean isCollidingBait(int[] now_coordinate, int snake_size,int[] bait_coordinate) {
+		if(now_coordinate == bait_coordinate){
+
+		}
+		return false;
 	}
 
 	/**
