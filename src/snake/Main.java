@@ -46,6 +46,10 @@ public class Main{
 		bait_coordinate[0] = 0;
 		bait_coordinate[1] = 0;
 
+		// スキャナ
+		Scanner scanner = new Scanner(System.in);
+
+		
 		// メインループ
 		while(alive_flag){
 
@@ -58,10 +62,8 @@ public class Main{
 			input_str = "";
 
 
-			Scanner scanner = new Scanner(System.in);
-
 			// 入力待機
-			while(elapse_time < wait_time){
+			while(input_str.length() <= 0){
 				input_str = scanner.next();
 				// 経過時間の更新
 				elapse_time += (System.currentTimeMillis() - now_ms) / 1000.0;
@@ -93,9 +95,9 @@ public class Main{
 			}
 			// 表示
 			System.out.println(now_coordinate[0] + "," + now_coordinate[1] + "," + snake_size);
-
-			scanner.close();
 		}
+
+		scanner.close();
 	}
 
 	private static String move(String input_str, int[] now_coordinate,
