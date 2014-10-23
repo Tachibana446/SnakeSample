@@ -3,8 +3,6 @@
  */
 package snake;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -31,15 +29,7 @@ public class Main{
 		long now_ms = System.currentTimeMillis();
 
 		// 蛇
-		// 最初の座標[x,y]	TODO:タプルを導入したい
-		int[] now_coordinate = new int[2];
-		now_coordinate[0] = 2;
-		now_coordinate[1] = 2;
-		// 座標のリスト
-		List<int[]> coordinates = new ArrayList<int[]>();
-		coordinates.add(now_coordinate);
-		// 長さ
-		int snake_size = 1;
+		Snake snake = new Snake(2, 2);
 
 		// エサの場所
 		int[] bait_coordinate = new int[2];
@@ -69,113 +59,33 @@ public class Main{
 				elapse_time += (System.currentTimeMillis() - now_ms) / 1000.0;
 			}
 
-			input_str = move(input_str, now_coordinate, coordinates);
+			// 入力に応じて移動
+			input_str = snake.move(input_str);
 
 			// 判定
 			//壁とぶつかったか
-			if(isColliding(field_size, now_coordinate)){
+			if(snake.isCollidingWall(field_size)){
 				alive_flag = false;
 			}
 			// 自身と接触したか
-			if(isCollidingOneself(now_coordinate,coordinates, snake_size)){
+			if(snake.isCollidingOneself()){
 				alive_flag = false;
 			}
 			// 餌を食ったか
-			if(isCollidingBait(now_coordinate, snake_size, bait_coordinate)){
+			if(snake.isCollidingBait(bait_coordinate)){
 				// 蛇が伸びる
-				snake_size += 1;
+				snake.grawSize();
 				// TODO:次のエサが出る。蛇に被らないようにランダムに出すのがめんどい
 
 				// TODO:待ち時間を減少させる。難しくなるので今は実装しない
 
 			}
 			// 表示
-			System.out.println(now_coordinate[0] + "," + now_coordinate[1] + "," + snake_size);
+			System.out.println(snake.toString());
 		}
 
+		System.out.println("GAME OVER!");
 		scanner.close();
 	}
-
-	/**
-	 * @param now_coordinate
-	 * @param snake_size
-	 * @param bait_coordinate
-	 * @return
-	 */
-	private static boolean isCollidingBait(int[] now_coordinate, int snake_size,int[] bait_coordinate) {
-		if(now_coordinate == bait_coordinate){
-
-		}
-		return false;
-	}
-
-	/**
-	 * @param alive_flag
-	 * @param now_coordinate
-	 * @param coordinates
-	 * @param snake_size
-	 * @return
-	 */
-	private static boolean isCollidingOneself(int[] now_coordinate, List<int[]> coordinates, int snake_size) {
-		// 一番最後は今移動した場所なので、最後から２番めから純にサイズ分だけ見ていく
-		boolean flag = false;
-		for(int i=1;i < snake_size; i++){
-			if(coordinates.get(coordinates.size() -1 - i) == now_coordinate){
-				flag = true;
-				break;
-			}
-		}
-		return flag;
-	}
-
-	/**
-	 * 壁と衝突したか判定する
-	 * 現在の座標がステージの大きさを超えていたらtrueを返します
-	 * @param field_size ステージの大きさ
-	 * @param now_coordinate 現在の座標
-	 * @return
-	 */
-	private static boolean isColliding(final int field_size, int[] now_coordinate) {
-		// 壁と接触したか
-		if(now_coordinate[0] <= 0 || now_coordinate[0] >= field_size || now_coordinate[1] <= 0 || now_coordinate[1] >= field_size){
-			return true;
-		}
-		return false;
-	}
-
-	private static String move(String input_str, int[] now_coordinate,
-			List<int[]> coordinates) {
-		// 入力に応じて移動
-		if(input_str.length() >= 1){
-			input_str = input_str.substring(0, 1);
-		}else{
-			input_str = "";
-		}
-		// 移動
-		switch (input_str) {
-		case "w":
-			now_coordinate[1] -= 1;
-			coordinates.add(now_coordinate);
-			break;
-		case "s":
-			now_coordinate[1] += 1;
-			coordinates.add(now_coordinate);
-			break;
-		case "a":
-			now_coordinate[0] -= 1;
-			coordinates.add(now_coordinate);
-			break;
-		case "d":
-			now_coordinate[0] += 1;
-			coordinates.add(now_coordinate);
-		default:
-			// TODO:入力がなければ前回の入力 prev_input_strの方向に進むが、長くなるので省略
-			now_coordinate[0] += 1;
-			coordinates.add(now_coordinate);
-			break;
-		}
-		return input_str;
-	}
-
 }
 
